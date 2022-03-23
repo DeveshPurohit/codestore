@@ -1,5 +1,7 @@
 import Head from 'next/head'
 import Image from 'next/image'
+import Footer from '../components/Footer'
+import Navbar from '../components/Navbar'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
@@ -11,10 +13,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      hi this is CodeStore
-      <div className="mx-10 bg-slate-600">Devesh</div>
-      <div className="mx-10 my-5 bg-slate-600">Devesh</div>
-
+      <Navbar/>
+        <div>
+          <img src='/home.jpeg'/>
+        </div>
+      <Footer/>
 
     </div>
   )
