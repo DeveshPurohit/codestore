@@ -12,7 +12,7 @@ export default function Home() {
       </Head>
 
       <div className="img mx-10">
-        <Image src={"/home.jpeg"} alt={"home"} height={500} width={1500} />
+        <Image src={"/home.jpeg"} alt={"home"} height={500} width={1200} />
       </div>
 
       <section className="text-gray-600 body-font">
