@@ -62,7 +62,7 @@ const Navbar = () => {
       </div>
       <div
         ref={ref}
-        className="z-10 w-80 h-full sidebar absolute top-0 right-0 bg-blue-200  p-10 tansform transition-transform translate-x-full p"
+        className="z-10 w-72 h-full sidebar absolute top-0 right-0 bg-blue-200  p-10 tansform transition-transform translate-x-full p"
       >
         <span
           onClick={toggleCart}
@@ -113,10 +113,15 @@ const Navbar = () => {
             </div>
           </li>
         </ol>
-        <button className="flex mx-auto mt-16 text-white bg-blue-500 border-0 py-2 px-5 focus:outline-none hover:bg-blue-600 rounded text-sm">
-          <BsFillBagCheckFill className="mt-0.5" />
-          Checkout
-        </button>
+        <div className="flex">
+          <button className="flex text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm">
+            <BsFillBagCheckFill className="mt-0.5" />
+            Checkout
+          </button>
+          <button className="flex mx-3 text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm">
+            ClearCart
+          </button>
+        </div>
       </div>
     </div>
   );
