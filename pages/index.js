@@ -11,8 +11,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="img mx-10">
-        <Image src={"/home.jpeg"} alt={"home"} height={500} width={1200} />
+      <div className="img mx-64">
+        <Image src={"/home.jpeg"} alt={"home"} height={600} width={1100} />
       </div>
 
       <section className="text-gray-600 body-font">
