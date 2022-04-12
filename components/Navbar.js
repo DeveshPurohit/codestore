@@ -10,7 +10,8 @@ import {
 import { BsFillBagCheckFill } from "react-icons/bs";
 import { useRef } from "react";
 
-const Navbar = () => {
+const Navbar = ({cart , addToCart , removeFromCart , clearCart , subTotal}) => {
+  console.log(cart , addToCart , removeFromCart , clearCart , subTotal)
   const toggleCart = () => {
     if (ref.current.classList.contains("translate-x-full")) {
       ref.current.classList.remove("translate-x-full");
