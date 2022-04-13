@@ -20,13 +20,13 @@ function MyApp({ Component, pageProps }) {
   
 
   const  saveCart = (myCart) =>{
-    localStorage.setItem("cart" , myCart)
+    localStorage.setItem("cart" , JSON.stringify(myCart))
     let subt=0;
-    let keys = Object.keys(cart)
-    for (let i = 0; keys.length; i++) {
+    let keys = Object.keys(myCart)
+    for (let i = 0; i<keys.length; i++) {
       subt += myCart[keys[i]].price * myCart[keys[i]].qty;
     }
-    setSubTotal(aubt)
+    setSubTotal(subt)
   }
 
   const addToCart = (itemCode , qty , price , name , size , variant) =>{
@@ -52,7 +52,7 @@ function MyApp({ Component, pageProps }) {
       newCart[itemCode].qty = cart[itemCode].qty - qty
     }
     if(newCart[itemCode].qty<=0){
-      delete newCart[itemcode]
+      delete newCart[itemCode]
     }
     setCart(newCart)
     saveCart(newCart)

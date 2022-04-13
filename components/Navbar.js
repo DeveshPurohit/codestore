@@ -11,7 +11,7 @@ import { BsFillBagCheckFill } from "react-icons/bs";
 import { useRef } from "react";
 
 const Navbar = ({cart , addToCart , removeFromCart , clearCart , subTotal}) => {
-  console.log(cart , addToCart , removeFromCart , clearCart , subTotal)
+  // console.log(cart , addToCart , removeFromCart , clearCart , subTotal)
   const toggleCart = () => {
     if (ref.current.classList.contains("translate-x-full")) {
       ref.current.classList.remove("translate-x-full");
@@ -73,53 +73,27 @@ const Navbar = ({cart , addToCart , removeFromCart , clearCart , subTotal}) => {
         </span>
         <h2 className="font-bold text-xl">Shopping Cart</h2>
         <ol className="list-decimal font-semibold">
-          <li>
+          {Object.keys(cart).length == 0 && 
+          <div className="my-4">
+            Your Cart is Empty!  
+          </div>}
+          {Object.keys(cart).map((k) => { return <li key={k}>
             <div className="item flex py-4 ">
-              <div className="w-2/3 ">Tshirt - enjoy the code</div>
+              <div className="w-2/3 ">{cart[k].name}</div>
               <div className="flex items-center justify-center w-1/3  font-semibold text-lg ">
-                <AiFillPlusCircle className="text-blue-500 cursor-pointer" />
-                <span className="text-sm mx-2">1</span>
-                <AiFillMinusCircle className="text-blue-500 cursor-pointer" />
+                <AiFillPlusCircle onClick={() => {addToCart(k, 1 , cart[k].price , cart[k].name , cart[k].size , cart[k].variant)}} className="text-blue-500 cursor-pointer" />
+                <span className="text-sm mx-2">{cart[k].qty}</span>
+                <AiFillMinusCircle onClick={() => {removeFromCart(k, 1 , cart[k].price , cart[k].name , cart[k].size , cart[k].variant)}} className="text-blue-500 cursor-pointer" />
               </div>
             </div>
-          </li>
-          <li>
-            <div className="item flex py-4">
-              <div className="w-2/3 ">Tshirt - enjoy the code</div>
-              <div className="flex items-center justify-center w-1/3  font-semibold text-lg">
-                <AiFillPlusCircle className="text-blue-500 cursor-pointer" />
-                <span className="text-sm mx-2">1</span>
-                <AiFillMinusCircle className="text-blue-500 cursor-pointer" />
-              </div>
-            </div>
-          </li>
-          <li>
-            <div className="item flex py-4">
-              <div className="w-2/3 ">Tshirt - enjoy the code</div>
-              <div className="flex items-center justify-center w-1/3  font-semibold text-lg">
-                <AiFillPlusCircle className="text-blue-500 cursor-pointer" />
-                <span className="text-sm mx-2">1</span>
-                <AiFillMinusCircle className="text-blue-500 cursor-pointer" />
-              </div>
-            </div>
-          </li>
-          <li>
-            <div className="item flex py-4">
-              <div className="w-2/3 ">Tshirt - enjoy the code</div>
-              <div className="flex items-center justify-center w-1/3  font-semibold text-lg">
-                <AiFillPlusCircle className="text-blue-500 cursor-pointer" />
-                <span className="text-sm mx-2">1</span>
-                <AiFillMinusCircle className="text-blue-500 cursor-pointer" />
-              </div>
-            </div>
-          </li>
+          </li>})}
         </ol>
         <div className="flex">
           <button className="flex text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm">
             <BsFillBagCheckFill className="mt-0.5" />
             Checkout
           </button>
-          <button className="flex mx-3 text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm">
+          <button onClick={clearCart} className="flex mx-3 text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm">
             ClearCart
           </button>
         </div>
