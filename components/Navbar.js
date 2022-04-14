@@ -23,7 +23,7 @@ const Navbar = ({cart , addToCart , removeFromCart , clearCart , subTotal}) => {
   };
   const ref = useRef();
   return (
-    <div className="flex flex-col md:flex-row md:items-start items-center justify-start py-3 mb-10 shadow-md">
+    <div className="flex flex-col md:flex-row md:items-start z-10 bg-white items-center justify-start py-3 mb-10 shadow-md sticky top-0 ">
       <div className="logo mx-5">
         <Link href={"/"}>
           <a>
@@ -59,11 +59,11 @@ const Navbar = ({cart , addToCart , removeFromCart , clearCart , subTotal}) => {
         onClick={toggleCart}
         className="cursor-pointer cart absolute right-0 mx-5"
       >
-        <AiOutlineShoppingCart className="text-xl md:text-3xl" />
+        <AiOutlineShoppingCart className="text-xl md:text-2xl" />
       </div>
       <div
         ref={ref}
-        className="z-10 w-72 h-full sidebar absolute top-0 right-0 bg-blue-200  p-10 tansform transition-transform translate-x-full p"
+        className="w-64 h-[100vh] sidebar absolute top-0 right-0 bg-blue-200  px-8 py-10 tansform transition-transform translate-x-full"
       >
         <span
           onClick={toggleCart}
@@ -89,10 +89,10 @@ const Navbar = ({cart , addToCart , removeFromCart , clearCart , subTotal}) => {
           </li>})}
         </ol>
         <div className="flex">
-          <button className="flex text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm">
+          <Link href={"/checkout"}><button className="flex text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm">
             <BsFillBagCheckFill className="mt-0.5" />
             Checkout
-          </button>
+          </button></Link>
           <button onClick={clearCart} className="flex mx-3 text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm">
             ClearCart
           </button>
