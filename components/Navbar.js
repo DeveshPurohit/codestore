@@ -27,12 +27,12 @@ const Navbar = ({cart , addToCart , removeFromCart , clearCart , subTotal}) => {
       <div className="logo mx-5">
         <Link href={"/"}>
           <a>
-            <Image src={"/logo.png"} height={30} width={160} alt={"logo"} />
+            <Image src={"/fl.png"} height={30} width={165} alt={"logo"} />
           </a>
         </Link>
       </div>
       <div className="nav">
-        <ul className="flex items-center text-md space-x-5 font-bold ">
+        <ul className="flex items-center text-lg space-x-6 font-semibold ">
           <Link href={"/tshirt"}>
             <a>
               <li>Tshirts</li>
