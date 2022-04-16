@@ -63,7 +63,7 @@ const Navbar = ({cart , addToCart , removeFromCart , clearCart , subTotal}) => {
       </div>
       <div
         ref={ref}
-        className="w-64 h-[100vh] sidebar absolute top-0 right-0 bg-blue-200  px-8 py-10 tansform transition-transform translate-x-full"
+        className={`w-64 h-[100vh] sidebar absolute top-0 right-0 bg-blue-200  px-8 py-10 tansform transition-transform ${Object.keys(cart).length!=0 ? 'translate-x-0' : 'translate-x-full'}`}
       >
         <span
           onClick={toggleCart}
@@ -88,6 +88,7 @@ const Navbar = ({cart , addToCart , removeFromCart , clearCart , subTotal}) => {
             </div>
           </li>})}
         </ol>
+        <div className="font-bold my-2">Subtotal : ₹{subTotal}</div>
         <div className="flex">
           <Link href={"/checkout"}><button className="flex text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm">
             <BsFillBagCheckFill className="mt-0.5" />
