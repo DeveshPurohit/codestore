@@ -13,7 +13,7 @@ const Footer = () => {
        <Image src={'/fl.png'} height={40} width={190} alt={'logo'}/>
       </a>
     </Link>   
-      <p className="mt-2 text-sm text-gray-500">Air plant banjo lyft occupy retro adaptogen indego</p>
+      <p className="mt-2 text-sm text-gray-500">Created by Devesh Purohit</p>
     </div>
     <div className="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
       <div className="lg:w-1/4 md:w-1/2 w-full px-4">
