@@ -57,8 +57,9 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
         </ul>
       </div>
       <div className="flex space-x-2 cursor-pointer cart absolute right-0 mx-5">
-        <Link href={"/login"}>
+        <Link href={"/login"}><a>
           <MdAccountCircle className="text-xl md:text-2xl" />
+          </a>
         </Link>
         <AiOutlineShoppingCart
           onClick={toggleCart}

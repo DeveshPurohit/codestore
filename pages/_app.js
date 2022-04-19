@@ -14,7 +14,6 @@ function MyApp({ Component, pageProps }) {
         saveCart(JSON.parse(localStorage.getItem("cart")))
       }
     } catch (error) {
-      console.error(error)
       localStorage.clear()
     }
   }, [])
