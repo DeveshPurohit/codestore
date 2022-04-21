@@ -11,7 +11,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="img mx-64">
+      <div className="img mx-6 md:mx-64">
         <Image src={"/home.jpeg"} alt={"home"} height={600} width={1100} />
       </div>
 
