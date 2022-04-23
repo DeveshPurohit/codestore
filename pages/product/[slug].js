@@ -1,11 +1,16 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
+import Product from "../../models/Product";
+import mongoose from "mongoose";
 
-const Post = ({addToCart}) => {
+const Post = ({addToCart , product , variants}) => {
+  console.log(product,variants)
   const router = useRouter();
   const { slug } = router.query;
   const [pin, setPin] = useState()
   const [service, setService] = useState()
+  const [color, setColor] = useState([product.color])
+  const [size, setSize] = useState(product.size)
 
   const checkServiceability = async() =>{
     let pins = await fetch('http://localhost:3000/api/pincode')
@@ -147,18 +152,24 @@ const Post = ({addToCart}) => {
               <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                 <div className="flex">
                   <span className="mr-3">Color</span>
-                  <button className="border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none"></button>
-                  <button className="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none"></button>
-                  <button className="border-2 border-gray-300 ml-1 bg-blue-500 rounded-full w-6 h-6 focus:outline-none"></button>
+                  {Object.keys(variants).includes('white') && Object.keys(variants['white']).includes(size) && <button className="border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none"></button>}
+                  {Object.keys(variants).includes('black') && Object.keys(variants['black']).includes(size) && <button className="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none"></button>}
+                  {Object.keys(variants).includes('blue') && Object.keys(variants['blue']).includes(size) && <button className="border-2 border-gray-300 ml-1 bg-blue-700 rounded-full w-6 h-6 focus:outline-none"></button>}
+                  {Object.keys(variants).includes('red') && Object.keys(variants['red']).includes(size) && <button className="border-2 border-gray-300 ml-1 bg-red-700 rounded-full w-6 h-6 focus:outline-none"></button>}
+                  {Object.keys(variants).includes('green') && Object.keys(variants['green']).includes(size) && <button className="border-2 border-gray-300 ml-1 bg-green-700 rounded-full w-6 h-6 focus:outline-none"></button>}
+                  {Object.keys(variants).includes('purple') && Object.keys(variants['purple']).includes(size) && <button className="border-2 border-gray-300 ml-1 bg-purple-700 rounded-full w-6 h-6 focus:outline-none"></button>}
+                  {Object.keys(variants).includes('grey') && Object.keys(variants['grey']).includes(size) && <button className="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none"></button>}
+                  {Object.keys(variants).includes('yellow') && Object.keys(variants['yellow']).includes(size) && <button className="border-2 border-gray-300 ml-1 bg-yellow-600 rounded-full w-6 h-6 focus:outline-none"></button>}
                 </div>
                 <div className="flex ml-6 items-center">
                   <span className="mr-3">Size</span>
                   <div className="relative">
                     <select className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500 text-base pl-3 pr-10">
-                      <option>SM</option>
+                      <option>S</option>
                       <option>M</option>
                       <option>L</option>
                       <option>XL</option>
+                      <option>XXL</option>
                     </select>
                     <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
                       <svg
@@ -223,5 +234,29 @@ const Post = ({addToCart}) => {
     </>
   );
 };
+
+export async function getServerSideProps(context) {
+  if (!mongoose.connections[0].readyState) {
+    await mongoose.connect(process.env.MONGO_URI);
+  }
+
+  let product = await Product.findOne({slug : context.query.slug});
+  let variants = await Product.find({title : product.title})
+  let colorSizeSlug = {}
+  for(let item of variants){
+    if(Object.keys(colorSizeSlug).includes(item.color)){
+      colorSizeSlug[item.color][item.size] = {slug : item.slug}
+    }
+    else{
+      colorSizeSlug[item.color] = {}
+      colorSizeSlug[item.color][item.size] = {slug : item.slug}
+    }
+  }
+
+  return {
+    props: { product: JSON.parse(JSON.stringify(product)) , variants: JSON.parse(JSON.stringify(colorSizeSlug)) }, // will be passed to the page component as props
+  };
+}
+
 
 export default Post;
