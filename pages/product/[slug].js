@@ -152,24 +152,24 @@ const Post = ({addToCart , product , variants}) => {
               <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                 <div className="flex">
                   <span className="mr-3">Color</span>
-                  {Object.keys(variants).includes('white') && Object.keys(variants['white']).includes(size) && <button className="border-2 border-gray-300 rounded-full w-6 h-6 focus:outline-none"></button>}
-                  {Object.keys(variants).includes('black') && Object.keys(variants['black']).includes(size) && <button className="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none"></button>}
-                  {Object.keys(variants).includes('blue') && Object.keys(variants['blue']).includes(size) && <button className="border-2 border-gray-300 ml-1 bg-blue-700 rounded-full w-6 h-6 focus:outline-none"></button>}
-                  {Object.keys(variants).includes('red') && Object.keys(variants['red']).includes(size) && <button className="border-2 border-gray-300 ml-1 bg-red-700 rounded-full w-6 h-6 focus:outline-none"></button>}
-                  {Object.keys(variants).includes('green') && Object.keys(variants['green']).includes(size) && <button className="border-2 border-gray-300 ml-1 bg-green-700 rounded-full w-6 h-6 focus:outline-none"></button>}
-                  {Object.keys(variants).includes('purple') && Object.keys(variants['purple']).includes(size) && <button className="border-2 border-gray-300 ml-1 bg-purple-700 rounded-full w-6 h-6 focus:outline-none"></button>}
-                  {Object.keys(variants).includes('grey') && Object.keys(variants['grey']).includes(size) && <button className="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none"></button>}
-                  {Object.keys(variants).includes('yellow') && Object.keys(variants['yellow']).includes(size) && <button className="border-2 border-gray-300 ml-1 bg-yellow-600 rounded-full w-6 h-6 focus:outline-none"></button>}
+                  {Object.keys(variants).includes('white') && Object.keys(variants['white']).includes(size) && <button className={`border-2  rounded-full w-6 h-6 focus:outline-none  ${color === 'white'?'border-black':'border-gray-300'}`}></button>}
+                  {Object.keys(variants).includes('black') && Object.keys(variants['black']).includes(size) && <button className={`border-2  ml-1 bg-black rounded-full w-6 h-6 focus:outline-none ${color === 'black'?'border-black':'border-gray-300'}`}></button>}
+                  {Object.keys(variants).includes('blue') && Object.keys(variants['blue']).includes(size) && <button className={`border-2  ml-1 bg-blue-700 rounded-full w-6 h-6 focus:outline-none ${color === 'blue'?'border-black':'border-gray-300'}`}></button>}
+                  {Object.keys(variants).includes('red') && Object.keys(variants['red']).includes(size) && <button className={`border-2  ml-1 bg-red-700 rounded-full w-6 h-6 focus:outline-none ${color === 'red'?'border-black':'border-gray-300'}`}></button>}
+                  {Object.keys(variants).includes('green') && Object.keys(variants['green']).includes(size) && <button className={`border-2  ml-1 bg-green-700 rounded-full w-6 h-6 focus:outline-none ${color === 'green'?'border-black':'border-gray-300'}`}></button>}
+                  {Object.keys(variants).includes('purple') && Object.keys(variants['purple']).includes(size) && <button className={`border-2  ml-1 bg-purple-700 rounded-full w-6 h-6 focus:outline-none ${color === 'purple'?'border-black':'border-gray-300'}`}></button>}
+                  {Object.keys(variants).includes('grey') && Object.keys(variants['grey']).includes(size) && <button className={`border-2  ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none ${color === 'grey'?'border-black':'border-gray-300'}`}></button>}
+                  {Object.keys(variants).includes('yellow') && Object.keys(variants['yellow']).includes(size) && <button className={`border-2  ml-1 bg-yellow-600 rounded-full w-6 h-6 focus:outline-none ${color === 'yellow'?'border-black':'border-gray-300'}`}></button>}
                 </div>
                 <div className="flex ml-6 items-center">
                   <span className="mr-3">Size</span>
                   <div className="relative">
                     <select className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-500 text-base pl-3 pr-10">
-                      <option>S</option>
-                      <option>M</option>
-                      <option>L</option>
-                      <option>XL</option>
-                      <option>XXL</option>
+                      {Object.keys(variants[color]).includes('S') && <option>S</option>}
+                      {Object.keys(variants[color]).includes('M') && <option>M</option>}
+                      {Object.keys(variants[color]).includes('L') && <option>L</option>}
+                      {Object.keys(variants[color]).includes('XL') && <option>XL</option>}
+                      {Object.keys(variants[color]).includes('XXL') && <option>XXL</option>}
                     </select>
                     <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
                       <svg
