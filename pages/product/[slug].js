@@ -8,12 +8,11 @@ const Post = ({addToCart , product , variants}) => {
   const { slug } = router.query;
   const [pin, setPin] = useState()
   const [service, setService] = useState()
-  const [color, setColor] = useState([product.color])
+  const [color, setColor] = useState(product.color)
   const [size, setSize] = useState(product.size)
 
   const refreshVariant = (newsize, newcolor) => {
-     console.log(variants)
-    let url = `http://localhost:3000/product/${variants[color][size]['slug']}`
+    let url = `http://localhost:3000/product/${variants[newcolor][newsize]['slug']}`
     window.location = url
   }
 
@@ -242,13 +241,12 @@ const Post = ({addToCart , product , variants}) => {
 
 export async function getServerSideProps(context) {
   if (!mongoose.connections[0].readyState) {
-  await mongoose.connect(process.env.MONGO_URI)
+    await mongoose.connect(process.env.MONGO_URI);
   }
-  
-  let product = await Product.findOne({ slug: context.query.slug })
-  let variants = await Product.find({title: product.title})
-  let colorSizeSlug = {} // {red: {xL: {sLug: 'wear-the-code-xL'}}}
-  
+
+  let product = await Product.findOne({slug : context.query.slug});
+  let variants = await Product.find({title : product.title})
+  let colorSizeSlug = {}
   for(let item of variants){
     if(Object.keys(colorSizeSlug).includes(item.color)){
       colorSizeSlug[item.color][item.size] = {slug : item.slug}
