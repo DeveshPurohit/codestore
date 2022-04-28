@@ -38,14 +38,14 @@ const Post = ({addToCart , product , variants}) => {
             <img
               alt="ecommerce"
               className="w-96 object-cover object-fill rounded"
-              src="https://m.media-amazon.com/images/I/8179t3934hS._AC_UL320_.jpg"
+              src={product.img}
             />
             <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
               <h2 className="text-sm title-font text-gray-500 tracking-widest">
                 CodeStore
               </h2>
               <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
-                The Red Cruiser
+                {product.title} ({product.size}/{product.color})
               </h1>
               <div className="flex mb-4">
                 <span className="flex items-center">
@@ -146,12 +146,7 @@ const Post = ({addToCart , product , variants}) => {
                 </span>
               </div>
               <p className="leading-relaxed">
-                Fam locavore kickstarter distillery. Mixtape chillwave tumeric
-                sriracha taximy chia microdosing tilde DIY. XOXO fam indxgo
-                juiceramps cornhole raw denim forage brooklyn. Everyday carry +1
-                seitan poutine tumeric. Gastropub blue bottle austin listicle
-                pour-over, neutra jean shorts keytar banjo tattooed umami
-                cardigan.
+               {product.desc}
               </p>
               <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                 <div className="flex">
@@ -198,7 +193,7 @@ const Post = ({addToCart , product , variants}) => {
                 <button className="flex ml-10 text-white bg-blue-500 border-0 py-2 px-1 md:px-4 focus:outline-none hover:bg-blue-600 rounded">
                   Buy Now
                 </button>
-                <button onClick={() => {addToCart(slug , 1 , 499 , "The Red Cruiser" , "XXL" , "Red")}} className="flex ml-4 text-white bg-blue-500 border-0 py-2 px-1 md:px-4 focus:outline-none hover:bg-blue-600 rounded">
+                <button onClick={() => {addToCart(slug , 1 , 499 , product.title , size , color)}} className="flex ml-4 text-white bg-blue-500 border-0 py-2 px-1 md:px-4 focus:outline-none hover:bg-blue-600 rounded">
                   Add To Cart
                 </button>
                 <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">

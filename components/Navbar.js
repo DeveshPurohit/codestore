@@ -36,22 +36,22 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
         <ul className="flex items-center text-lg space-x-6 font-semibold ">
           <Link href={"/tshirt"}>
             <a>
-              <li>Tshirts</li>
+              <li className="hover:text-blue-500">Tshirts</li>
             </a>
           </Link>
           <Link href={"/hoodies"}>
             <a>
-              <li>Hoodies</li>
+              <li className="hover:text-blue-500">Hoodies</li>
             </a>
           </Link>
           <Link href={"/stickers"}>
             <a>
-              <li>Stickers</li>
+              <li className="hover:text-blue-500">Stickers</li>
             </a>
           </Link>
           <Link href={"/mugs"}>
             <a>
-              <li>Mugs</li>
+              <li className="hover:text-blue-500">Mugs</li>
             </a>
           </Link>
         </ul>
@@ -87,7 +87,7 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
             return (
               <li key={k}>
                 <div className="item flex py-4 ">
-                  <div className="w-2/3 ">{cart[k].name}</div>
+                  <div className="w-2/3 ">{cart[k].name} ({cart[k].size}/{cart[k].variant})</div>
                   <div className="flex items-center justify-center w-1/3  font-semibold text-lg ">
                     <AiFillPlusCircle
                       onClick={() => {
