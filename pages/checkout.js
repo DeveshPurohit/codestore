@@ -128,7 +128,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
             return (
               <li key={k}>
                 <div className="item flex py-4 ">
-                  <div className="">{cart[k].name}</div>
+                  <div className="">{cart[k].name} ({cart[k].size}/{cart[k].variant})</div>
                   <div className="flex items-center justify-center w-1/3  font-semibold text-lg ">
                     <AiFillPlusCircle
                       onClick={() => {
