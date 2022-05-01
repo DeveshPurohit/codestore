@@ -2,6 +2,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Product from "../../models/Product";
 import mongoose from "mongoose";
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 
 const Post = ({addToCart, buyNow , product , variants}) => {
   const router = useRouter();
@@ -21,9 +23,27 @@ const Post = ({addToCart, buyNow , product , variants}) => {
     let pinJson = await pins.json()
     if(pinJson.includes(parseInt(pin))){
       setService(true)
+      toast.success('Pincode is Serviceable', {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
     else{
       setService(false)
+      toast.error('Sorry, Pincode is not Serviceable!', {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
     }
   }
 
@@ -33,6 +53,17 @@ const Post = ({addToCart, buyNow , product , variants}) => {
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">
+        <ToastContainer
+          position="top-center"
+          autoClose={1000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
         <div className="container px-5 py-16 mx-auto">
           <div className="lg:w-4/5 mx-auto flex flex-wrap">
             <img
