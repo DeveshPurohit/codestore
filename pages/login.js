@@ -44,7 +44,7 @@ const Login = () => {
       });
       setTimeout(() => {
         router.push("http://localhost:3000")  
-      }, 1000)
+      }, 2000)
     }
     else{
       toast.error(response.error, {
