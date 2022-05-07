@@ -13,7 +13,7 @@ const Footer = () => {
        <Image src={'/fl.png'} height={40} width={190} alt={'logo'}/>
       </a>
     </Link>   
-    <p className="mt-2 text-sm text-gray-500 px-4">Enjoy the &lt; code/&gt; </p>
+    <p className="mt-2 text-sm text-gray-500 px-4">Enjoy the <strong>&lt;CodeStore/&gt;</strong> </p>
     <p className="text-sm text-gray-500 px-4">Premium coding tshirts, hoodies and apparels</p>
     </div>
     <div className="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
