@@ -13,6 +13,7 @@ import { MdAccountCircle } from "react-icons/md";
 import { useRef } from "react";
 
 const Navbar = ({
+  logout,
   cart,
   addToCart,
   user,
@@ -69,11 +70,11 @@ const Navbar = ({
         <a onMouseOver={()=>{setDropdown(true)}}
             onMouseLeave={()=>{setDropdown(false)}}>
           {dropdown && 
-            <div className="bg-blue-300 absolute py-4 px-5 text-sm  top-6 right-8 w-32 rounded-md">
+            <div className="bg-blue-300 absolute py-4 px-5 text-sm  top-6 right-9 w-32 rounded-md">
               <ul>
-                <li className="py-1 hover:text-blue-700">My Account</li>
-                <li className="py-1 hover:text-blue-700">Orders</li>
-                <li className="py-1 hover:text-blue-700">Logout</li>
+                <Link href={'/myAccount'}><a><li className="py-1 hover:text-blue-700 font-bold">My Account</li></a></Link>
+                <Link href={'/orders'}><a><li className="py-1 hover:text-blue-700 font-bold">Orders</li></a></Link>
+                <li  onClick={logout}  className="py-1 hover:text-blue-700 font-bold">Logout</li>
               </ul>
             </div>
           }

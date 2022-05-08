@@ -3,6 +3,8 @@ import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import { useState , useEffect } from 'react';
 import { useRouter } from 'next/router'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({})
@@ -10,6 +12,21 @@ function MyApp({ Component, pageProps }) {
   const [user, setUser] = useState({value: null})
   const [key, setKey] = useState( 0)
   const router = useRouter()
+
+  const logout = () => {
+    localStorage.removeItem('token')
+    setUser({value: null})
+    setKey(Math.random())
+    toast.success('Your Account has been Logged Out!', {
+      position: "top-center",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+    }
 
   useEffect(() => {
     try {
@@ -76,7 +93,18 @@ function MyApp({ Component, pageProps }) {
   }
 
   return <>
-    <Navbar  user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
+    <ToastContainer
+position="top-center"
+autoClose={1000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+/>
+    <Navbar logout={logout} user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
     <Component buyNow={buyNow} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}  {...pageProps} />
     <Footer/>
   </>
