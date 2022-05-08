@@ -7,6 +7,8 @@ import { useRouter } from 'next/router'
 function MyApp({ Component, pageProps }) {
   const [cart, setCart] = useState({})
   const [subTotal, setSubTotal] = useState(0)
+  const [user, setUser] = useState({value: null})
+  const [key, setKey] = useState( 0)
   const router = useRouter()
 
   useEffect(() => {
@@ -18,7 +20,12 @@ function MyApp({ Component, pageProps }) {
     } catch (error) {
       localStorage.clear()
     }
-  }, [])
+    const token = localStorage.getItem('token')
+    if(token){
+      setUser({value: token})
+      setKey(Math.random())
+    }
+  }, [router.query])
   
 
   const  saveCart = (myCart) =>{
@@ -69,7 +76,7 @@ function MyApp({ Component, pageProps }) {
   }
 
   return <>
-    <Navbar cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
+    <Navbar  user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
     <Component buyNow={buyNow} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}  {...pageProps} />
     <Footer/>
   </>

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
+import { useState } from "react";
 import {
   AiOutlineShoppingCart,
   AiFillPlusCircle,
@@ -11,8 +12,16 @@ import { BsFillBagCheckFill } from "react-icons/bs";
 import { MdAccountCircle } from "react-icons/md";
 import { useRef } from "react";
 
-const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
+const Navbar = ({
+  cart,
+  addToCart,
+  user,
+  removeFromCart,
+  clearCart,
+  subTotal,
+}) => {
   // console.log(cart , addToCart , removeFromCart , clearCart , subTotal)
+  const [dropdown, setDropdown] = useState(false);
   const toggleCart = () => {
     if (ref.current.classList.contains("translate-x-full")) {
       ref.current.classList.remove("translate-x-full");
@@ -25,7 +34,7 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
   const ref = useRef();
   return (
     <div className="flex flex-col md:flex-row md:items-start z-10 bg-white items-center justify-start py-3 mb-10 shadow-md sticky top-0 ">
-      <div className="logo mx-5">
+      <div className="logo md:mx-5 mx-8 mr-auto">
         <Link href={"/"}>
           <a>
             <Image src={"/fl.png"} height={30} width={165} alt={"logo"} />
@@ -56,11 +65,31 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
           </Link>
         </ul>
       </div>
-      <div className="flex space-x-2 cursor-pointer cart absolute right-0 mx-5">
-        <Link href={"/login"}><a>
-          <MdAccountCircle className="text-xl md:text-2xl" />
-          </a>
-        </Link>
+      <div className="flex space-x-2 items-center cursor-pointer cart absolute right-0 mx-5">
+        <a onMouseOver={()=>{setDropdown(true)}}
+            onMouseLeave={()=>{setDropdown(false)}}>
+          {dropdown && 
+            <div className="bg-blue-300 absolute py-4 px-5 text-sm  top-6 right-8 w-32 rounded-md">
+              <ul>
+                <li className="py-1 hover:text-blue-700">My Account</li>
+                <li className="py-1 hover:text-blue-700">Orders</li>
+                <li className="py-1 hover:text-blue-700">Logout</li>
+              </ul>
+            </div>
+          }
+        
+        {user.value && (
+          <MdAccountCircle
+            className="text-xl md:text-2xl"
+          />
+        )}</a>
+        {!user.value && (
+          <Link href={"/login"}>
+            <a className="bg-blue-500 rounded-md text-sm py-1 px-2 mx-2  text-white">
+              Login
+            </a>
+          </Link>
+        )}
         <AiOutlineShoppingCart
           onClick={toggleCart}
           className="text-xl md:text-2xl"
@@ -87,7 +116,9 @@ const Navbar = ({ cart, addToCart, removeFromCart, clearCart, subTotal }) => {
             return (
               <li key={k}>
                 <div className="item flex py-4 ">
-                  <div className="w-2/3 ">{cart[k].name} ({cart[k].size}/{cart[k].variant})</div>
+                  <div className="w-2/3 ">
+                    {cart[k].name} ({cart[k].size}/{cart[k].variant})
+                  </div>
                   <div className="flex items-center justify-center w-1/3  font-semibold text-lg ">
                     <AiFillPlusCircle
                       onClick={() => {
