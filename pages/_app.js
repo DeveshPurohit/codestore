@@ -5,8 +5,10 @@ import { useState , useEffect } from 'react';
 import { useRouter } from 'next/router'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import LoadingBar from 'react-top-loading-bar'
 
 function MyApp({ Component, pageProps }) {
+  const [progress, setProgress] = useState(0)
   const [cart, setCart] = useState({})
   const [subTotal, setSubTotal] = useState(0)
   const [user, setUser] = useState({value: null})
@@ -19,7 +21,7 @@ function MyApp({ Component, pageProps }) {
     setKey(Math.random())
     toast.success('Your Account has been Logged Out!', {
       position: "top-center",
-      autoClose: 1000,
+      autoClose: 500,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -29,6 +31,12 @@ function MyApp({ Component, pageProps }) {
     }
 
   useEffect(() => {
+    router.events.on('routeChangeStart', () => {
+      setProgress(45)
+    })
+    router.events.on('routeChangeComplete', () => {
+      setProgress(100)
+    })
     try {
       if(localStorage.getItem("cart")){
         setCart(JSON.parse(localStorage.getItem("cart")))
@@ -104,6 +112,12 @@ pauseOnFocusLoss
 draggable
 pauseOnHover
 />
+<LoadingBar
+        color='#3482F6'
+        progress={progress}
+        waitingTime={300}
+        onLoaderFinished={() => setProgress(0)}
+      />
     <Navbar logout={logout} user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
     <Component buyNow={buyNow} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}  {...pageProps} />
     <Footer/>

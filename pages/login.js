@@ -4,11 +4,18 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
 
 const Login = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      router.push("/");
+    }
+  }, []);
 
   const handleChange = (e) => {
     if (e.target.name == "email") {
@@ -32,8 +39,8 @@ const Login = () => {
     console.log(response);
     setEmail("");
     setPassword("");
-    if(response.success){
-      localStorage.setItem('token',response.token)
+    if (response.success) {
+      localStorage.setItem("token", response.token);
       toast.success("You are Succesfully logged in!", {
         position: "top-center",
         autoClose: 1000,
@@ -44,10 +51,9 @@ const Login = () => {
         progress: undefined,
       });
       setTimeout(() => {
-        router.push("http://localhost:3000")  
-      }, 2000)
-    }
-    else{
+        router.push("http://localhost:3000");
+      }, 1500);
+    } else {
       toast.error(response.error, {
         position: "top-center",
         autoClose: 1000,
@@ -58,7 +64,6 @@ const Login = () => {
         progress: undefined,
       });
     }
-    
   };
 
   return (
