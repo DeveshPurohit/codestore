@@ -1,6 +1,16 @@
 import React from "react";
+import Order from "../models/Order";
+import mongoose from "mongoose";
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 const Orders = () => {
+  const router = useRouter()
+  useEffect(() => {
+    if(!localStorage.getItem('token')){
+      router.push('/')
+    }
+  }, [])
   return (
     <div>
       <div className="container mx-auto">
@@ -73,5 +83,17 @@ const Orders = () => {
     </div>
   );
 };
+
+export async function getServerSideProps(context) {
+  if (!mongoose.connections[0].readyState) {
+    await mongoose.connect(process.env.MONGO_URI);
+  }
+
+  let orders = await Order.find({});
+
+  return {
+    props: { orders: orders }, // will be passed to the page component as props
+  };
+}
 
 export default Orders;
