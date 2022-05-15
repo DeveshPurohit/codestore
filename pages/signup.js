@@ -8,9 +8,9 @@ import { useEffect } from "react";
 
 const SignUp = () => {
   const router = useRouter()
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     if(localStorage.getItem('token')){
@@ -33,7 +33,7 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = { name, email, password };
-    let res = await fetch("http://localhost:3000/api/signup", {
+    let res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/signup`, {
       method: "POST", // or 'PUT'
       headers: {
         "Content-Type": "application/json",
@@ -55,7 +55,7 @@ const SignUp = () => {
       progress: undefined,
     });
     setTimeout(() => {
-      router.push("http://localhost:3000/login")  
+      router.push(`${process.env.NEXT_PUBLIC_HOST}/login`)  
     }, 2000)
   };
 
