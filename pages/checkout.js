@@ -9,41 +9,64 @@ import {
 import { BsFillBagCheckFill } from "react-icons/bs";
 
 const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
-  const initiatePayment = () => {
+  const initiatePayment = async () => {
     let txnToken;
     let amount;
-    var config = {
-      "root": "",
-      "flow": "DEFAULT",
-      "data": {
-      "orderId": Math.random(), /* update order id */
-      "token": txnToken, /* update token value */
-      "tokenType": "TXN_TOKEN",
-      "amount": amount /* update amount */
+
+    //Get a Transaction token
+    const data = { cart, subTotal};
+    let a = fetch(`${NEXT_PUBLIC_HOST}/api/pretransaction`, {
+      method: "POST", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
       },
-      "handler": {
-        "notifyMerchant": function(eventName,data){
+      body: JSON.stringify(data),
+    })
+    let b = await a.jsonn()
+    console.log(b)
+
+    var config = {
+      root: "",
+      flow: "DEFAULT",
+      data: {
+        orderId: Math.floor(Math.random() * Date.now()) /* update order id */,
+        token: txnToken /* update token value */,
+        tokenType: "TXN_TOKEN",
+        amount: amount /* update amount */,
+      },
+      handler: {
+        notifyMerchant: function (eventName, data) {
           console.log("notifyMerchant handler function called");
-          console.log("eventName => ",eventName);
-          console.log("data => ",data);
-        } 
-      }
+          console.log("eventName => ", eventName);
+          console.log("data => ", data);
+        },
+      },
     };
 
-    
-            // initialze configuration using init method 
-            window.Paytm.CheckoutJS.init(config).then(function onSuccess() {
-                // after successfully updating configuration, invoke JS Checkout
-                window.Paytm.CheckoutJS.invoke();
-            }).catch(function onError(error){
-                console.log("error => ",error);
-            });
-     
-  }
+    // initialze configuration using init method
+    window.Paytm.CheckoutJS.init(config)
+      .then(function onSuccess() {
+        // after successfully updating configuration, invoke JS Checkout
+        window.Paytm.CheckoutJS.invoke();
+      })
+      .catch(function onError(error) {
+        console.log("error => ", error);
+      });
+  };
   return (
     <div className="container px-2 sm:m-auto">
-<Head><meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0"/></Head>
-<Script type="application/javascript" crossorigin="anonymous" src={`${process.env.PAYTM_HOST}/merchantpgpui/checkoutjs/merchants/${process.env.PAYTM_MID}.js`} onload="onScriptLoad();"/> 
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0"
+        />
+      </Head>
+      <Script
+        type="application/javascript"
+        crossorigin="anonymous"
+        src={`${process.env.PAYTM_HOST}/merchantpgpui/checkoutjs/merchants/${process.env.PAYTM_MID}.js`}
+        onload="onScriptLoad();"
+      />
       <h1 className="font-bold text-3xl my-8 text-center">Checkout</h1>
       <h2 className="font-semibold text-xl">1. Delivery Details</h2>
       <div className="mx-auto flex my-2">
@@ -162,7 +185,9 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
             return (
               <li key={k}>
                 <div className="item flex py-4 ">
-                  <div className="">{cart[k].name} ({cart[k].size}/{cart[k].variant})</div>
+                  <div className="">
+                    {cart[k].name} ({cart[k].size}/{cart[k].variant})
+                  </div>
                   <div className="flex items-center justify-center w-1/3  font-semibold text-lg ">
                     <AiFillPlusCircle
                       onClick={() => {
@@ -199,12 +224,15 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
         </ol>
         <span className="font-bold">Subtotal : ₹{subTotal}</span>
       </div>
-        <div className="mx-4">
-          <button onClick={initiatePayment} className="flex text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm">
-            <BsFillBagCheckFill className="mt-0.5" />
-            Pay ₹{subTotal}
-          </button>
-        </div>
+      <div className="mx-4">
+        <button
+          onClick={initiatePayment}
+          className="flex text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm"
+        >
+          <BsFillBagCheckFill className="mt-0.5" />
+          Pay ₹{subTotal}
+        </button>
+      </div>
     </div>
   );
 };
