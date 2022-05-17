@@ -10,29 +10,29 @@ import { BsFillBagCheckFill } from "react-icons/bs";
 
 const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
   const initiatePayment = async () => {
-    let txnToken;
-    let amount;
+    let oid = Math.floor(Math.random() * Date.now())
 
     //Get a Transaction token
-    const data = { cart, subTotal};
-    let a = fetch(`${NEXT_PUBLIC_HOST}/api/pretransaction`, {
+    const data = { cart, subTotal, oid, email: "email"};
+    let a = fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`, {
       method: "POST", // or 'PUT'
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     })
-    let b = await a.jsonn()
-    console.log(b)
+    let txnRes = await a.jsonn()
+    console.log(txnRes)
+    let txnToken = txnRes.txnToken
 
     var config = {
       root: "",
       flow: "DEFAULT",
       data: {
-        orderId: Math.floor(Math.random() * Date.now()) /* update order id */,
+        orderId: oid /* update order id */,
         token: txnToken /* update token value */,
         tokenType: "TXN_TOKEN",
-        amount: amount /* update amount */,
+        amount: subTotal /* update amount */,
       },
       handler: {
         notifyMerchant: function (eventName, data) {
@@ -64,8 +64,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
       <Script
         type="application/javascript"
         crossorigin="anonymous"
-        src={`${process.env.PAYTM_HOST}/merchantpgpui/checkoutjs/merchants/${process.env.PAYTM_MID}.js`}
-        onload="onScriptLoad();"
+        src={`${process.env.NEXT_PUBLIC_PAYTM_HOST}/merchantpgpui/checkoutjs/merchants/${process.env.NEXT_PUBLIC_PAYTM_MID}.js`}
       />
       <h1 className="font-bold text-3xl my-8 text-center">Checkout</h1>
       <h2 className="font-semibold text-xl">1. Delivery Details</h2>
