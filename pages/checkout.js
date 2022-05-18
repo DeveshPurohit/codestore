@@ -21,7 +21,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
       },
       body: JSON.stringify(data),
     })
-    let txnRes = await a.jsonn()
+    let txnRes = await a.json()
     console.log(txnRes)
     let txnToken = txnRes.txnToken
 
