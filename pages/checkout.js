@@ -1,6 +1,4 @@
 import React from "react";
-import Head from "next/head";
-import Script from "next/script";
 import {
   AiFillPlusCircle,
   AiFillMinusCircle,
@@ -9,63 +7,62 @@ import {
 import { BsFillBagCheckFill } from "react-icons/bs";
 
 const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
-  const initiatePayment = async () => {
-    let oid = Math.floor(Math.random() * Date.now())
+  const initializeRazorpay = () => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
 
-    //Get a Transaction token
-    const data = { cart, subTotal, oid, email: "email"};
-    let a = fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`, {
-      method: "POST", // or 'PUT'
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-    let txnRes = await a.json()
-    console.log(txnRes)
-    let txnToken = txnRes.txnToken
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
 
-    var config = {
-      root: "",
-      flow: "DEFAULT",
-      data: {
-        orderId: oid /* update order id */,
-        token: txnToken /* update token value */,
-        tokenType: "TXN_TOKEN",
-        amount: subTotal /* update amount */,
+      document.body.appendChild(script);
+    });
+  };
+
+  const makePayment = async () => {
+    const res = await initializeRazorpay();
+
+    if (!res) {
+      alert("Razorpay SDK Failed to load");
+      return;
+    }
+
+    // Make API call to the serverless API
+    const data = await fetch("/api/razorpay", { method: "POST" }).then((t) =>
+      t.json()
+    );
+    console.log(data);
+    var options = {
+      key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
+      name: "Devesh Pvt Ltd",
+      currency: data.currency,
+      amount: data.amount,
+      order_id: data.id,
+      description: "Thankyou for your test donation",
+      image: "/fl.png",
+      handler: function (response) {
+        // Validate payment at server - using webhooks is a better idea.
+        alert(response.razorpay_payment_id);
+        alert(response.razorpay_order_id);
+        alert(response.razorpay_signature);
       },
-      handler: {
-        notifyMerchant: function (eventName, data) {
-          console.log("notifyMerchant handler function called");
-          console.log("eventName => ", eventName);
-          console.log("data => ", data);
-        },
+      prefill: {
+        name: "Devesh Purohit",
+        email: "purohitdev@gmail.com",
+        contact: "9876549999",
       },
     };
 
-    // initialze configuration using init method
-    window.Paytm.CheckoutJS.init(config)
-      .then(function onSuccess() {
-        // after successfully updating configuration, invoke JS Checkout
-        window.Paytm.CheckoutJS.invoke();
-      })
-      .catch(function onError(error) {
-        console.log("error => ", error);
-      });
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
   };
   return (
     <div className="container px-2 sm:m-auto">
-      <Head>
-        <meta
-          name="viewport"
-          content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0"
-        />
-      </Head>
-      <Script
-        type="application/javascript"
-        crossorigin="anonymous"
-        src={`${process.env.NEXT_PUBLIC_PAYTM_HOST}/merchantpgpui/checkoutjs/merchants/${process.env.NEXT_PUBLIC_PAYTM_MID}.js`}
-      />
+    
       <h1 className="font-bold text-3xl my-8 text-center">Checkout</h1>
       <h2 className="font-semibold text-xl">1. Delivery Details</h2>
       <div className="mx-auto flex my-2">
@@ -78,7 +75,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
               type="text"
               id="name"
               name="name"
-              className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              className="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />
           </div>
         </div>
@@ -91,7 +88,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
               type="email"
               id="email"
               name="email"
-              className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              className="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />
           </div>
         </div>
@@ -103,7 +100,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
               Address
             </label>
             <textarea
-              className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              className="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               name="address"
               id=""
               cols="30"
@@ -122,7 +119,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
               type="phone"
               id="phone"
               name="phone"
-              className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              className="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />
           </div>
         </div>
@@ -135,7 +132,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
               type="text"
               id="city"
               name="city"
-              className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              className="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />
           </div>
         </div>
@@ -150,7 +147,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
               type="text"
               id="state"
               name="state"
-              className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              className="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />
           </div>
         </div>
@@ -166,7 +163,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
               type="text"
               id="Pincode"
               name="Pincode"
-              className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              className="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />
           </div>
         </div>
@@ -225,7 +222,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
       </div>
       <div className="mx-4">
         <button
-          onClick={initiatePayment}
+          onClick={makePayment}
           className="flex text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm"
         >
           <BsFillBagCheckFill className="mt-0.5" />
