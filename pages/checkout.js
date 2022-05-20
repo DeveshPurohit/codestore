@@ -5,8 +5,47 @@ import {
   AiFillCloseCircle,
 } from "react-icons/ai";
 import { BsFillBagCheckFill } from "react-icons/bs";
+import { useState } from "react";
 
 const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [address, setAddress] = useState('')
+  const [pincode, setPincode] = useState('')
+  const [city, setCity] = useState('')
+  const [state, setState] = useState('')
+  const [disabled, setDisabled] = useState(true)
+
+const handleChange = (e) => {
+  if(e.target.name == 'name'){
+    setName(e.target.value)
+  }
+  else if(e.target.name == 'email'){
+    setEmail(e.target.value)
+  }
+  else if(e.target.name == 'phone'){
+    setPhone(e.target.value)
+  }
+  else if(e.target.name == 'address'){
+    setAddress(e.target.value)
+  }
+  else if(e.target.name == 'Pincode'){
+    setPincode(e.target.value)
+  }
+
+setTimeout(() => {
+  if(name.length>3 && email.length>3 && phone.length>3 && address.length>3 && pincode.length>3){
+    setDisabled(false)
+  }
+  else{
+    setDisabled(true)
+  }
+}, 100);
+
+  
+}
+
   const initializeRazorpay = () => {
     return new Promise((resolve) => {
       const script = document.createElement("script");
@@ -59,6 +98,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
 
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
+
   };
   return (
     <div className="container px-2 sm:m-auto">
@@ -72,6 +112,8 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
               Name
             </label>
             <input
+            onChange={handleChange}
+            value={name}
               type="text"
               id="name"
               name="name"
@@ -85,6 +127,8 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
               Email
             </label>
             <input
+            onChange={handleChange}
+            value={email}
               type="email"
               id="email"
               name="email"
@@ -100,9 +144,11 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
               Address
             </label>
             <textarea
+            onChange={handleChange}
+            value={address}
               className="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
               name="address"
-              id=""
+              id="address"
               cols="30"
               rows="2"
             ></textarea>
@@ -116,6 +162,8 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
               Phone
             </label>
             <input
+            onChange={handleChange}
+            value={phone}
               type="phone"
               id="phone"
               name="phone"
@@ -125,13 +173,18 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
         </div>
         <div className="px-2 w-1/2">
           <div className="mb-4">
-            <label htmlFor="city" className="leading-7 text-sm text-gray-600">
-              City
+          <label
+              htmlFor="Pincode"
+              className="leading-7 text-sm text-gray-600"
+            >
+              Pincode
             </label>
             <input
+            onChange={handleChange}
+            value={pincode}
               type="text"
-              id="city"
-              name="city"
+              id="Pincode"
+              name="Pincode"
               className="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />
           </div>
@@ -144,27 +197,29 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
               State
             </label>
             <input
+              value={state}
               type="text"
               id="state"
               name="state"
               className="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              readOnly
             />
           </div>
         </div>
         <div className="px-2 w-1/2">
           <div className="mb-4">
-            <label
-              htmlFor="Pincode"
-              className="leading-7 text-sm text-gray-600"
-            >
-              Pincode
+          <label htmlFor="city" className="leading-7 text-sm text-gray-600">
+              City
             </label>
             <input
+            value={city}
               type="text"
-              id="Pincode"
-              name="Pincode"
+              id="city"
+              name="city"
               className="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+              readOnly
             />
+           
           </div>
         </div>
       </div>
@@ -222,8 +277,9 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
       </div>
       <div className="mx-4">
         <button
+          disabled={disabled}
           onClick={makePayment}
-          className="flex text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm"
+          className="disabled:bg-blue-300 flex text-white bg-blue-500 border-0 py-2 px-2 focus:outline-none hover:bg-blue-600 rounded text-sm"
         >
           <BsFillBagCheckFill className="mt-0.5" />
           Pay ₹{subTotal}

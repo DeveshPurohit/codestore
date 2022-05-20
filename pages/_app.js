@@ -49,8 +49,8 @@ function MyApp({ Component, pageProps }) {
     const token = localStorage.getItem('token')
     if(token){
       setUser({value: token})
-      setKey(Math.random())
     }
+    setKey(Math.random())
   }, [router.query])
   
 
@@ -119,7 +119,7 @@ pauseOnHover
         waitingTime={300}
         onLoaderFinished={() => setProgress(0)}
       />
-    <Navbar logout={logout} user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />
+    {key && <Navbar logout={logout} user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />}
     <Component buyNow={buyNow} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}  {...pageProps} />
     <Footer/>
   </>
