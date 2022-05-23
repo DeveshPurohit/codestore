@@ -17,7 +17,7 @@ const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
   const [state, setState] = useState('')
   const [disabled, setDisabled] = useState(true)
 
-const handleChange = (e) => {
+const handleChange = async(e) => {
   if(e.target.name == 'name'){
     setName(e.target.value)
   }
@@ -32,6 +32,22 @@ const handleChange = (e) => {
   }
   else if(e.target.name == 'Pincode'){
     setPincode(e.target.value)
+    if(e.target.value.length == 6){
+      let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`)
+      let pinJson = await pins.json()
+      if(Object.keys(pinJson).includes(e.target.value)){
+        setCity(pinJson[e.target.value][0])
+        setState(pinJson[e.target.value][1])
+      }
+      else{
+        setCity('')
+        setState('')
+      }
+    }
+    else{
+      setCity('')
+      setState('')
+    }
   }
 
 setTimeout(() => {
@@ -71,7 +87,7 @@ setTimeout(() => {
     }
 
     // Make API call to the serverless API
-    const data = await fetch("/api/razorpay", { method: "POST" }).then((t) =>
+    const data = await fetch("/api/razorpay", { method: "POST", subTotal }).then((t) =>
       t.json()
     );
     console.log(data);
@@ -79,15 +95,15 @@ setTimeout(() => {
       key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
       name: "Devesh Pvt Ltd",
       currency: data.currency,
-      amount: data.amount,
+      amount: subTotal,
       order_id: data.id,
-      description: "Thankyou for your test donation",
+      description: "Thankyou Sir for your test donation",
       image: "/fl.png",
       handler: function (response) {
         // Validate payment at server - using webhooks is a better idea.
-        alert(response.razorpay_payment_id);
-        alert(response.razorpay_order_id);
-        alert(response.razorpay_signature);
+        console.log(response.razorpay_payment_id);
+        console.log(response.razorpay_order_id);
+        console.log(response.razorpay_signature);
       },
       prefill: {
         name: "Devesh Purohit",
@@ -197,6 +213,7 @@ setTimeout(() => {
               State
             </label>
             <input
+              onChange={handleChange} 
               value={state}
               type="text"
               id="state"
@@ -212,6 +229,7 @@ setTimeout(() => {
               City
             </label>
             <input
+              onChange={handleChange} 
             value={city}
               type="text"
               id="city"
