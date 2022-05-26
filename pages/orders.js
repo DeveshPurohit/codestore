@@ -4,13 +4,30 @@ import React from "react";
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
-const Orders = () => {
+const Orders = async () => {
   const router = useRouter()
+
   useEffect(() => {
+    const fetchOrders = async() => {
+      let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/myorders`, {
+        method: "POST", // or 'PUT'
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({token: localStorage.getItem('token')}),
+      })
+      let res = await a.json()
+      console.log(res)
+    }
+    
     if(!localStorage.getItem('token')){
       router.push('/')
     }
+    else{
+      fetchOrders()
+    }
   }, [])
+
   return (
     <div>
       <div className="container mx-auto">
@@ -83,17 +100,5 @@ const Orders = () => {
     </div>
   );
 };
-
-// export async function getServerSideProps(context) {
-//   if (!mongoose.connections[0].readyState) {
-//     await mongoose.connect(process.env.MONGO_URI);
-//   }
-
-//   let orders = await Order.find({});
-
-//   return {
-//     props: { orders: orders }, // will be passed to the page component as props
-//   };
-// }
 
 export default Orders;

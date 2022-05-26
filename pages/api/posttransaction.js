@@ -1,7 +1,7 @@
 import Order from "../../models/Order";
 import connectDb from "../../middleware/mongoose";
 
-export default async function handler(req, res) {
+const handler = async (req, res) => {
   if(req.body.STATUS == 'TXN_SUCCESS'){
     let order = await Order.findOneAndUpdate({orderId: req.body.ORDERID}, {status: 'Paid', paymentInfo: JSON.stringify(req.body)})
   }
@@ -12,3 +12,4 @@ export default async function handler(req, res) {
     res.status(200).json({ body: req.body })
   }
   
+  export default connectDb(handler);
