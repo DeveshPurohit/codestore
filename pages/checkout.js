@@ -8,6 +8,8 @@ import {
 } from "react-icons/ai";
 import { BsFillBagCheckFill } from "react-icons/bs";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
 
@@ -79,6 +81,7 @@ setTimeout(() => {
       body: JSON.stringify(data),
     })
     let txnRes = await a.json()
+    if(txnRes.success){
     console.log(txnRes)
     let txnToken = txnRes.txnToken
 
@@ -109,9 +112,33 @@ setTimeout(() => {
       .catch(function onError(error) {
         console.log("error => ", error);
       });
+    }
+    else{
+       console.log(txnRes.error)
+       toast.error(txnRes.error, {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }
   };
   return (
     <div className="container px-2 sm:m-auto">
+      <ToastContainer
+position="top-center"
+autoClose={2000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+/>
       <Head>
         <meta
           name="viewport"
