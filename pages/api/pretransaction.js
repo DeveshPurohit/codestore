@@ -14,6 +14,11 @@ const handler = async (req, res) => {
     for(let item in cart){
       sumTotal += cart[item].price * cart[item].qty
       product = await Product.findOne({slug: item})
+
+      if(product.availableQty<cart[item].qty){
+        res.status(200).json({success: false, "error": "Some item in your cart went out of stock. Please try again!"})
+      }
+
       if(product.price != cart[item].price){
         res.status(200).json({success: false, "error": "The price of some item in your cart have changed, please try again"})
         return

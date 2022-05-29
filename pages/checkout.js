@@ -11,7 +11,7 @@ import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Checkout = ({ cart, subTotal, addToCart, removeFromCart }) => {
+const Checkout = ({ cart, clearCart, subTotal, addToCart, removeFromCart }) => {
 
     const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -115,9 +115,10 @@ setTimeout(() => {
     }
     else{
        console.log(txnRes.error)
+       clearCart()
        toast.error(txnRes.error, {
         position: "top-center",
-        autoClose: 2000,
+        autoClose: 1800,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
