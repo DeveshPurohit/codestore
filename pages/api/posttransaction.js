@@ -14,7 +14,7 @@ const handler = async (req, res) => {
   else if(req.body.STATUS == 'PENDING'){
     order = await Order.findOneAndUpdate({orderId: req.body.ORDERID}, {status: 'Pending', paymentInfo: JSON.stringify(req.body)})
   }
-    res.redirect('/order?id=&clearCart=1' + order._id, 200)
+    res.redirect('/order?id=' + order._id + '&clearCart=1', 200)
     res.status(200).json({ body: req.body })
   }
   

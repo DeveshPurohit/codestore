@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter()
 
   const logout = () => {
-    localStorage.removeItem('token')
+    localStorage.removeItem('myuser')
     setUser({value: null})
     setKey(Math.random())
     router.push('/')
@@ -46,9 +46,9 @@ function MyApp({ Component, pageProps }) {
     } catch (error) {
       localStorage.clear()
     }
-    const token = localStorage.getItem('token')
-    if(token){
-      setUser({value: token})
+    const myuser = localStorage.getItem('myuser')
+    if(myuser){
+      setUser({value: myuser})
     }
     setKey(Math.random())
   }, [router.query])
