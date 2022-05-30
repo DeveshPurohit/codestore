@@ -12,7 +12,7 @@ const handler = async (req, res) => {
       const originalText = bytes.toString(CryptoJS.enc.Utf8);
         if(req.body.email == user.email && req.body.password == originalText){
             var token = jwt.sign({email: user.email, name: user.name }, process.env.JWT_SECRET, {expiresIn: "1d"});
-            res.status(200).json({success: true, token});
+            res.status(200).json({success: true, token, email: user.email});
         }
         else{
             res.status(400).json({success: false, error: "Invalid Credentials"})

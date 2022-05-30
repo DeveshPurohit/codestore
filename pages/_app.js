@@ -46,9 +46,9 @@ function MyApp({ Component, pageProps }) {
     } catch (error) {
       localStorage.clear()
     }
-    const myuser = localStorage.getItem('myuser')
+    const myuser = JSON.parse(localStorage.getItem('myuser'))
     if(myuser){
-      setUser({value: myuser})
+      setUser({value: myuser.token, email: myuser.email })
     }
     setKey(Math.random())
   }, [router.query])
@@ -121,7 +121,7 @@ pauseOnHover
         onLoaderFinished={() => setProgress(0)}
       />
     {key && <Navbar logout={logout} user={user} key={key} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal} />}
-    <Component buyNow={buyNow} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}  {...pageProps} />
+    <Component user={user} buyNow={buyNow} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} subTotal={subTotal}  {...pageProps} />
     <Footer/>
   </>
 }
