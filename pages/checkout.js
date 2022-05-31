@@ -10,9 +10,9 @@ import { BsFillBagCheckFill } from "react-icons/bs";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import User from "../models/User";
+import { useEffect } from "react";
 
-const Checkout = ({ user, cart, clearCart, subTotal, addToCart, removeFromCart }) => {
+const Checkout = ({ cart, clearCart, subTotal, addToCart, removeFromCart }) => {
 
     const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -22,6 +22,16 @@ const Checkout = ({ user, cart, clearCart, subTotal, addToCart, removeFromCart }
   const [city, setCity] = useState('')
   const [state, setState] = useState('')
   const [disabled, setDisabled] = useState(true)
+  const [user, setUser] = useState({value: null})
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('myuser'))
+    if(user.token){
+      setUser(user)
+      setEmail(user.email)
+    }
+  }, [])
+  
 
 const handleChange = async(e) => {
   if(e.target.name == 'name'){
@@ -175,8 +185,8 @@ pauseOnHover
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">
               Email
             </label>
-            {user.email?<input
-            value={user.email}
+            {user && user.email?<input
+            value={email}
               type="email"
               id="email"
               name="email"
@@ -190,14 +200,6 @@ pauseOnHover
               name="email"
               className="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
             />}
-            <input
-            onChange={handleChange}
-            value={email}
-              type="email"
-              id="email"
-              name="email"
-              className="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-            />
           </div>
         </div>
       </div>
