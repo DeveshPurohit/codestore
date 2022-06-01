@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 
 const Order1 = ({order, clearCart}) => {
   const products = order.products
+  console.log(products)
   const router = useRouter()
 
   useEffect(() => {

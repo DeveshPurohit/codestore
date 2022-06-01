@@ -229,6 +229,7 @@ pauseOnHover
             </label>
             <input
             onChange={handleChange}
+            placeholder="Enter your 10 digit phone number"
             value={phone}
               type="phone"
               id="phone"
@@ -276,7 +277,7 @@ pauseOnHover
         <div className="px-2 w-1/2">
           <div className="mb-4">
           <label htmlFor="city" className="leading-7 text-sm text-gray-600">
-              City
+              District
             </label>
             <input
               onChange={handleChange} 

@@ -11,6 +11,11 @@ const handler = async (req, res) => {
     let product, sumTotal=0;
     let cart = req.body.cart;
 
+    if(req.body.subTotal <= 0){
+      res.status(200).json({success: false, "error": "Cart is empty!, Please build your cart and try again"})
+      return
+    }
+
     for(let item in cart){
       sumTotal += cart[item].price * cart[item].qty
       product = await Product.findOne({slug: item})
@@ -30,6 +35,14 @@ const handler = async (req, res) => {
         return
     }
     
+    if(req.body.phone.length != 10 || !Number.isInteger(req.body.phone)){
+      res.status(200).json({success: false, "error": "Please enter 10 digit phone number"})
+      return
+    }
+    if(req.body.pincode.length != 6 || !Number.isInteger(req.body.pincode)){
+      res.status(200).json({success: false, "error": "Please enter 6 digit Pincode"})
+      return
+    }
 
 //  Initiating an order corresoponding to this order id    
     let order = new Order({
