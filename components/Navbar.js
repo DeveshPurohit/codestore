@@ -11,6 +11,9 @@ import {
 import { BsFillBagCheckFill } from "react-icons/bs";
 import { MdAccountCircle } from "react-icons/md";
 import { useRef } from "react";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { route } from "next/dist/server/router";
 
 const Navbar = ({
   logout,
@@ -23,18 +26,43 @@ const Navbar = ({
 }) => {
   // console.log(cart , addToCart , removeFromCart , clearCart , subTotal)
   const [dropdown, setDropdown] = useState(false);
-  const toggleCart = () => {
-    if (ref.current.classList.contains("translate-x-full")) {
-      ref.current.classList.remove("translate-x-full");
-      ref.current.classList.add("translate-x-0");
-    } else if (!ref.current.classList.contains("translate-x-full")) {
-      ref.current.classList.remove("translate-x-0");
-      ref.current.classList.add("translate-x-full");
+  const [sidebar, setSidebar] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    Object.keys(cart).length !== 0 && setSidebar(true)
+    const exempted = ['/order', '/orders', '/checkout', '/']
+    if(exempted.includes(router.pathname)){
+      setSidebar(false)
     }
+  }, [])
+  
+
+  const toggleCart = () => {
+    setSidebar(!sidebar)
   };
   const ref = useRef();
   return (
-    <div className="flex flex-col md:flex-row md:items-start z-10 bg-white items-center justify-start py-3 mb-10 shadow-md sticky top-0 ">
+    <>
+    {!sidebar && <span onMouseOver={()=>{setDropdown(true)}}
+          onMouseLeave={()=>{setDropdown(false)}} className="absolute z-30 top-3 right-12  cursor-pointer">
+          {dropdown && 
+            <div className="bg-blue-200 z-30 absolute py-4 px-5 text-sm  top-6 right-4  w-32 rounded-md">
+              <ul>
+                <Link href={'/myAccount'}><a><li className="py-1 hover:text-blue-700 font-bold">My Account</li></a></Link>
+                <Link href={'/orders'}><a><li className="py-1 hover:text-blue-700 font-bold">Orders</li></a></Link>
+                <li  onClick={logout}  className="py-1 hover:text-blue-700 font-bold">Logout</li>
+              </ul>
+            </div>
+          }
+           
+        {user.value && (
+          <MdAccountCircle
+            className=" text-xl md:text-2xl mx-2"
+          />
+        )}
+        </span>}
+    <div className={`flex flex-col md:flex-row md:items-start z-10 bg-white items-center justify-start py-3 mb-10 shadow-md sticky top-0 ${!sidebar && 'overflow-hidden'}`}>
       <div className="logo md:mx-5 mx-8 mr-auto">
         <Link href={"/"}>
           <a>
@@ -67,23 +95,7 @@ const Navbar = ({
         </ul>
       </div>
       <div className="flex space-x-2 items-center cursor-pointer cart absolute right-0 mx-5">
-        <span onMouseOver={()=>{setDropdown(true)}}
-            onMouseLeave={()=>{setDropdown(false)}}>
-          {dropdown && 
-            <div className="bg-blue-200 absolute py-4 px-5 text-sm  top-6 right-9 w-32 rounded-md">
-              <ul>
-                <Link href={'/myAccount'}><a><li className="py-1 hover:text-blue-700 font-bold">My Account</li></a></Link>
-                <Link href={'/orders'}><a><li className="py-1 hover:text-blue-700 font-bold">Orders</li></a></Link>
-                <li  onClick={logout}  className="py-1 hover:text-blue-700 font-bold">Logout</li>
-              </ul>
-            </div>
-          }
         
-        {user.value && (
-          <MdAccountCircle
-            className="text-xl md:text-2xl"
-          />
-        )}</span>
         {!user.value && (
           <Link href={"/login"}>
             <a className="bg-blue-500 rounded-md text-sm py-1 px-2 mx-2  text-white">
@@ -98,8 +110,8 @@ const Navbar = ({
       </div>
       <div
         ref={ref}
-        className={`sidebar w-64 h-[100vh] overflow-y-scroll absolute top-0 right-0 bg-blue-200  px-8 py-10 tansform transition-transform ${
-          Object.keys(cart).length != 0 ? "translate-x-0" : "translate-x-full"
+        className={`sidebar w-64 h-[100vh] overflow-y-scroll absolute top-0  bg-blue-200  px-8 py-10 transition-all ${
+          sidebar ? "right-0" : "-right-64"
         }`}
       >
         <span
@@ -172,6 +184,7 @@ const Navbar = ({
         </div>
       </div>
     </div>
+    </>
   );
 };
 
