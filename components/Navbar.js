@@ -45,7 +45,7 @@ const Navbar = ({
   return (
     <>
     {!sidebar && <span onMouseOver={()=>{setDropdown(true)}}
-          onMouseLeave={()=>{setDropdown(false)}} className="absolute z-30 top-3 right-12  cursor-pointer">
+          onMouseLeave={()=>{setDropdown(false)}} className="fixed z-30 top-3 right-12  cursor-pointer">
           {dropdown && 
             <div className="bg-blue-200 z-30 absolute py-4 px-5 text-sm  top-6 right-4  w-32 rounded-md">
               <ul>

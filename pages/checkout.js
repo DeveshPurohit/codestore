@@ -65,18 +65,19 @@ const handleChange = async(e) => {
       setState('')
     }
   }
-
-setTimeout(() => {
-  if(name.length>3 && email.length>3 && phone.length>3 && address.length>3 && pincode.length>3){
-    setDisabled(false)
-  }
-  else{
-    setDisabled(true)
-  }
-}, 100);
-
-  
+ 
 }
+
+  useEffect(() => {
+    if(name.length>3 && email.length>3 && phone.length>3 && address.length>3 && pincode.length>3){
+      setDisabled(false)
+    }
+    else{
+      setDisabled(true)
+    }
+  }, [name, email, phone, address, pincode])
+  
+
 
   const initiatePayment = async () => {
     // let txnToken;
