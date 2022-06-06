@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Create Next App</title>
+        <title>CodeStore.com</title>
         <meta name="description" content="CodeStore - Enjoy the code" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
