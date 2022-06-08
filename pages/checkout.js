@@ -26,7 +26,7 @@ const Checkout = ({ cart, clearCart, subTotal, addToCart, removeFromCart }) => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('myuser'))
-    if(user.token){
+    if(user && user.token){
       setUser(user)
       setEmail(user.email)
     }
@@ -186,7 +186,7 @@ pauseOnHover
             <label htmlFor="email" className="leading-7 text-sm text-gray-600">
               Email
             </label>
-            {user && user.email?<input
+            {user && user.token?<input
             value={email}
               type="email"
               id="email"

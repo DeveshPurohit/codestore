@@ -3,6 +3,7 @@ const PaytmChecksum = require("paytmchecksum");
 import Order from "../../models/Order";
 import connectDb from "../../middleware/mongoose";
 import Product from "../../models/Product";
+import pincodes from "../../pincodes.json"
 
 const handler = async (req, res) => {
   if (req.method == 'POST') {
@@ -10,6 +11,11 @@ const handler = async (req, res) => {
     // checking if the cart is temperd or not
     let product, sumTotal=0;
     let cart = req.body.cart;
+
+    if(!Object.keys(pincodes).includes(req.body.pincode)){
+      res.status(200).json({success: false, "error": "The pincode you have entered is not serviceable!"})
+      return
+    }
 
     if(req.body.subTotal <= 0){
       res.status(200).json({success: false, "error": "Cart is empty!, Please build your cart and try again"})
