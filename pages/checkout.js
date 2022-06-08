@@ -94,7 +94,6 @@ const handleChange = async(e) => {
     })
     let txnRes = await a.json()
     if(txnRes.success){
-    console.log(txnRes)
     let txnToken = txnRes.txnToken
 
     var config = {
@@ -127,7 +126,9 @@ const handleChange = async(e) => {
     }
     else{
        console.log(txnRes.error)
-       clearCart()
+       if(txnRes.cartClear){
+         clearCart()
+       }
        toast.error(txnRes.error, {
         position: "top-center",
         autoClose: 1800,

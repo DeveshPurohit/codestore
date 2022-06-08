@@ -39,7 +39,7 @@ const Order1 = ({order, clearCart}) => {
          return <div key={key} className="flex border-t border-gray-200 py-2">
          <span className="text-gray-500">{products[key].name} ({products[key].size}/{products[key].variant})</span>
          <span className="ml-auto text-gray-900">{products[key].qty}</span>
-         <span className="ml-auto text-gray-900">₹{products[key].price}</span>
+         <span className="ml-auto text-gray-900">₹{products[key].price} X {products[key].qty} = ₹{products[key].price * products[key].qty}</span>
        </div>
        }) }
 
@@ -47,7 +47,7 @@ const Order1 = ({order, clearCart}) => {
           <span className="tite-font font-medium text-2xl text-gray-900">SubTotal : ₹{order.amount}</span> 
         </div>
        <div className="my-6">
-       <button className="flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Track Order</button></div>
+       <button className="flex text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Track Order</button></div>
       </div>
       <img alt="ecommerce" className=" w-full lg:w-1/3  lg:h-auto h-full object-cover object-center rounded" src="/demo.jpeg"/>
     </div>

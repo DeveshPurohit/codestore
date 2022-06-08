@@ -4,6 +4,7 @@ const OrderSchema = new mongoose.Schema({
     email: {type: String, required: true},
     orderId: {type: String, required: true},
     paymentInfo: {type: String, default: ''},
+    transactionId: {type: String, default: ''},
     products: {type: Object, required: true},
     address: {type: String, required: true},
     amount: {type: Number, required: true},

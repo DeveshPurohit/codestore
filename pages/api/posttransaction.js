@@ -30,7 +30,7 @@ const handler = async (req, res) => {
   if (req.body.STATUS == "TXN_SUCCESS") {
     order = await Order.findOneAndUpdate(
       { orderId: req.body.ORDERID },
-      { status: "Paid", paymentInfo: JSON.stringify(req.body) }
+      { status: "Paid", paymentInfo: JSON.stringify(req.body), transactionId: req.body.TXNID }
     );
     let products = order.products;
     for (let slug in products) {
