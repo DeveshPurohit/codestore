@@ -56,6 +56,10 @@ const handler = async (req, res) => {
       orderId: req.body.oid,
       products: req.body.cart,
       address: req.body.address,
+      state: req.body.state,
+      city: req.body.city,
+      phone: req.body.phone,
+      name: req.body.name,
       amount: req.body.subTotal
     })
     await order.save()

@@ -1,3 +1,4 @@
+import { data } from 'autoprefixer';
 import { useRouter } from 'next/router'
 import React from 'react'
 import { useEffect, useState } from 'react'
@@ -20,15 +21,16 @@ const MyAccount = () => {
   
   const router = useRouter()
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('myuser'))
-    if(user && user.token){
-      setUser(user)
-      setEmail(user.email)
+    const myuser = JSON.parse(localStorage.getItem('myuser'))
+    if(myuser && myuser.token){
+      setUser(myuser)
+      setEmail(myuser.email)
+      fetchUser(myuser.token)
     }
     if(!user){
       router.push('/')
     }
-  }, [])
+  }, [router])
 
   const handleChange = async(e) => {
     if(e.target.name == 'name'){
@@ -52,8 +54,57 @@ const MyAccount = () => {
    
   }
 
+  const fetchUser = async(token) => {
+    let data = {token: token}
+    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
+      method: "POST", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+    let res = await a.json()
+    console.log(res)
+    setName(res.name)
+    setAddress(res.address)
+    setPhone(res.phone)
+    setPincode(res.pincode)
+  }
+  const handleUserSubmit = async() => {
+    let data = {token: user.token, name, pincode, address, phone}
+    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/updateuser`, {
+      method: "POST", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+    let res = await a.json()
+    console.log(res)
+    toast.success('Successfully Updated!', {
+      position: "top-center",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+  }
+
   return (
     <div className='container mx-auto'>
+      <ToastContainer
+position="top-center"
+autoClose={1000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+/>
       <h1 className="text-3xl text-center font-bold">Update Your Account</h1>
       <h2 className="font-semibold text-xl">1. Delivery Details</h2>
        <div className="mx-auto flex my-2">
@@ -150,6 +201,7 @@ const MyAccount = () => {
       </div>
       <div className="mx-2 mb-8">
         <button
+          onClick={handleUserSubmit}
           className="flex text-white bg-blue-600 border-0 py-2 px-2 focus:outline-none hover:bg-blue-800 rounded text-sm"
         >
           Submit
