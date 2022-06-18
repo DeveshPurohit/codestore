@@ -25,13 +25,44 @@ const Checkout = ({ cart, clearCart, subTotal, addToCart, removeFromCart }) => {
   const [user, setUser] = useState({value: null})
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('myuser'))
-    if(user && user.token){
-      setUser(user)
-      setEmail(user.email)
+    const myuser = JSON.parse(localStorage.getItem('myuser'))
+    if(myuser && myuser.token){
+      setUser(myuser)
+      setEmail(myuser.email)
+      fetchUser(myuser.token)
     }
   }, [])
+
+  const fetchUser = async(token) => {
+    let data = {token: token}
+    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/getuser`, {
+      method: "POST", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+    let res = await a.json()
+    console.log(res)
+    setName(res.name)
+    setAddress(res.address)
+    setPhone(res.phone)
+    setPincode(res.pincode)
+    getData(res.pincode)
+  }
   
+  const getData = async(pin) => {
+    let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`)
+      let pinJson = await pins.json()
+      if(Object.keys(pinJson).includes(pin)){
+        setCity(pinJson[pin][0])
+        setState(pinJson[pin][1])
+      }
+      else{
+        setCity('')
+        setState('')
+      }
+  }
 
 const handleChange = async(e) => {
   if(e.target.name == 'name'){
@@ -49,16 +80,7 @@ const handleChange = async(e) => {
   else if(e.target.name == 'Pincode'){
     setPincode(e.target.value)
     if(e.target.value.length == 6){
-      let pins = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pincode`)
-      let pinJson = await pins.json()
-      if(Object.keys(pinJson).includes(e.target.value)){
-        setCity(pinJson[e.target.value][0])
-        setState(pinJson[e.target.value][1])
-      }
-      else{
-        setCity('')
-        setState('')
-      }
+      getData(e.target.value)
     }
     else{
       setCity('')

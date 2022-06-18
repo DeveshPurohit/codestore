@@ -18,6 +18,7 @@ const MyAccount = () => {
   const [user, setUser] = useState({value: null})
   const [password, setPassword] = useState('')
   const [cpassword, setCPassword] = useState('')
+  const [npassword, setNPassword] = useState('')
   
   const router = useRouter()
   useEffect(() => {
@@ -41,6 +42,9 @@ const MyAccount = () => {
     }
     else if(e.target.name == 'cpassword'){
       setCPassword(e.target.value)
+    }
+    else if(e.target.name == 'npassword'){
+      setNPassword(e.target.value)
     }
     else if(e.target.name == 'phone'){
       setPhone(e.target.value)
@@ -90,6 +94,49 @@ const MyAccount = () => {
       draggable: true,
       progress: undefined,
       });
+  }
+  const handlePasswordSubmit = async() => {
+    let res;
+    if(npassword == cpassword){
+      let data = {token: user.token, password, npassword, cpassword}
+    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/updatepassword`, {
+      method: "POST", // or 'PUT'
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+   res = await a.json()
+    }
+    else{
+      res = {success: false}
+    }
+    if(res.success){
+      toast.success('Successfully Updated Password!', {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }
+    else{
+      toast.error('Error in Updating Password!', {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }
+    setCPassword('')
+    setNPassword('')
+    setPassword('')
+    
   }
 
   return (
@@ -224,10 +271,26 @@ pauseOnHover
             />
           </div>
         </div>
+        
+        <div className="px-2 w-1/2">
+          <div className="mb-4">
+            <label htmlFor="npassword" className="leading-7 text-sm text-gray-600">
+            New Password
+            </label>
+            <input
+            onChange={handleChange}
+            value={npassword}
+              type="password"
+              id="npassword"
+              name="npassword"
+              className="w-full bg-white rounded border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+            />
+          </div>
+        </div>
         <div className="px-2 w-1/2">
           <div className="mb-4">
             <label htmlFor="cpassword" className="leading-7 text-sm text-gray-600">
-            Confirm Password
+            Confirm New Password
             </label>
             <input
             onChange={handleChange}
@@ -242,6 +305,7 @@ pauseOnHover
       </div>
       <div className="m-2">
         <button
+        onClick={handlePasswordSubmit}
           className="flex text-white bg-blue-600 border-0 py-2 px-2 focus:outline-none hover:bg-blue-800 rounded text-sm"
         >
           Submit
