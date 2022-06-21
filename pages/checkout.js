@@ -163,7 +163,7 @@ const handleChange = async(e) => {
     }
   };
   return (
-    <div className="container px-2 sm:m-auto">
+    <div className="min-h-screen container px-2 sm:m-auto">
       <ToastContainer
 position="top-center"
 autoClose={2000}

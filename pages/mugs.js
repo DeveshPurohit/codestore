@@ -6,9 +6,9 @@ import mongoose from "mongoose";
 const Mugs = ({ products }) => {
   return (
     <div>
-      <section className="text-gray-600 body-font">
+      <section className="min-h-screen text-gray-600 body-font">
         <div className="container px-5 py-10 mx-auto">
-          <div className="flex flex-wrap -m-4 justify-center">
+          <div className="flex flex-wrap -m-4 justify-center mx-4">
             {Object.keys(products).length === 0 && <p>Sorry all Mugs are out of stock! New stock Comiong Soon....Stay Tuned.</p>}
             {Object.keys(products).map((item) => {
               return <Link passHref={true} key={products[item]._id} href={`/product/${products[item].slug}`}>
