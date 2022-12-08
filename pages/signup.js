@@ -13,10 +13,10 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    if(localStorage.getItem('token')){
-      router.push('/')
+    if (localStorage.getItem("myuser")) {
+      router.push(process.env.NEXT_PUBLIC_HOST);
     }
-  }, [])
+  }, []);
 
   const handleChange = (e) => {
     if (e.target.name == "name") {

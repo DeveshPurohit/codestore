@@ -118,7 +118,7 @@ draggable
 pauseOnHover
 />
 <LoadingBar
-        color='#3482F6'
+        color='red'
         progress={progress}
         waitingTime={300}
         onLoaderFinished={() => setProgress(0)}

@@ -56,12 +56,14 @@ const handler = async (req, res) => {
       orderId: req.body.oid,
       products: req.body.cart,
       address: req.body.address,
-      state: req.body.state,
       city: req.body.city,
+      state: req.body.state,
       phone: req.body.phone,
       name: req.body.name,
-      amount: req.body.subTotal
+      amount: req.body.subTotal,
+      pincode: req.body.pincode
     })
+    
     await order.save()
 
     var paytmParams = {};
@@ -69,7 +71,7 @@ const handler = async (req, res) => {
     paytmParams.body = {
       requestType: "Payment",
       mid: process.env.NEXT_PUBLIC_PAYTM_MID,
-      websiteName: "YOUR_WEBSITE_NAME",
+      websiteName: "CodeStore.com",
       orderId: req.body.oid,
       callbackUrl: `${process.env.NEXT_PUBLIC_HOST}/api/posttransaction`,
       txnAmount: {
@@ -117,6 +119,7 @@ const handler = async (req, res) => {
           var post_req = https.request(options, function (post_res) {
             post_res.on("data", function (chunk) {
               response += chunk;
+              console.log(chunk)
             });
     
             post_res.on('end', function () {
@@ -128,11 +131,13 @@ const handler = async (req, res) => {
           });
     
           post_req.write(post_data);
+          console.log(post_data)
           post_req.end();
         })
       }
 
       let myr = await requestAsync()
+      // console.log(myr)
       res.status(200).json(myr)
       
   }

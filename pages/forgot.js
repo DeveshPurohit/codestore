@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Forgot() {
   const router = useRouter()
@@ -10,10 +12,10 @@ function Forgot() {
   const [cpassword, setCpassword] = useState('')
   
   useEffect(() => {
-    if(localStorage.getItem('token')){
-      router.push('/')
+    if (localStorage.getItem("myuser")) {
+      router.push(process.env.NEXT_PUBLIC_HOST);
     }
-  }, [router])
+  }, []);
 
   const handleChange = async(e) => {
     if(e.target.name == 'password'){
@@ -34,7 +36,7 @@ function Forgot() {
       email,
       sendMail: true
     }
-    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/forgot`, {
+    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/nodemailerr`, {
       method: "POST", // or 'PUT'
       headers: {
         "Content-Type": "application/json",
@@ -51,25 +53,45 @@ function Forgot() {
   }
 
   const setNewPassword = async() =>{
+    let res;
     if(password == cpassword){
-      let data = {
-      password,
-      sendMail: false
-    }
-    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/forgot`, {
+      let data = {token: user.token, password, sendMail: false, cpassword}
+    let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/setnewpassword`, {
       method: "POST", // or 'PUT'
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
     })
-    let res = await a.json()
-    if(res.success){
-      console.log("password changed")
+   res = await a.json()
     }
     else{
-      console.log("error")
-    }}
+      res = {success: false}
+    }
+    if(res.success){
+      toast.success('Successfully Updated Password!', {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }
+    else{
+      toast.error('Error in Updating Password!', {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        });
+    }
+    setCPassword('')
+    setNPassword('')
   }
 
   return (
@@ -168,8 +190,8 @@ function Forgot() {
                 Set New Password
               </button>
             </div>
-            {password !== cpassword && "Password does not match!"}
-            {password && password === cpassword && "Password match!"}
+            {password !== cpassword && <p className='text-red-500'>Password does not match!</p>}
+            {password && password === cpassword && <p className='text-green-600'>Password matched!</p>}
           </form>}
           {!router.query.token && 
           <form className="mt-8 space-y-6" action="#" method="POST">

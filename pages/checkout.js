@@ -30,6 +30,11 @@ const Checkout = ({ cart, clearCart, subTotal, addToCart, removeFromCart }) => {
       setUser(myuser)
       setEmail(myuser.email)
       fetchUser(myuser.token)
+      // console.log("g",city)
+      // console.log("Devesh")
+      // console.log(state)
+      // console.log(name,pincode,address)
+      // console.log(email)
     }
   }, [])
 
@@ -43,8 +48,9 @@ const Checkout = ({ cart, clearCart, subTotal, addToCart, removeFromCart }) => {
       body: JSON.stringify(data),
     })
     let res = await a.json()
-    console.log(res)
+    // console.log(res)
     setName(res.name)
+    // console.log(res.name)
     setAddress(res.address)
     setPhone(res.phone)
     setPincode(res.pincode)
@@ -77,6 +83,12 @@ const handleChange = async(e) => {
   else if(e.target.name == 'address'){
     setAddress(e.target.value)
   }
+  else if(e.target.name == 'city'){
+    setCity(e.target.value)
+  }
+  else if(e.target.name == 'state'){
+    setState(e.target.value)
+  }
   else if(e.target.name == 'Pincode'){
     setPincode(e.target.value)
     if(e.target.value.length == 6){
@@ -106,7 +118,8 @@ const handleChange = async(e) => {
     let oid = Math.floor(Math.random() * Date.now())
 
     //Get a Transaction token
-    const data = { cart, subTotal, oid, email: email, phone, address, name, pincode};
+    const data = { cart, subTotal, oid, email: email, phone, address, city, state, name, pincode};
+    console.log(cart, subTotal, oid, email, phone, address, city, state, name, pincode)
     let a = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/pretransaction`, {
       method: "POST", // or 'PUT'
       headers: {
@@ -115,7 +128,11 @@ const handleChange = async(e) => {
       body: JSON.stringify(data),
     })
     let txnRes = await a.json()
+    console.log("Hey i am 1st before response")
+    console.log(txnRes)
+    console.log("Hey i am response")
     if(txnRes.success){
+      console.log("hey ia ma Succes")
     let txnToken = txnRes.txnToken
 
     var config = {
@@ -139,6 +156,7 @@ const handleChange = async(e) => {
     // initialze configuration using init method
     window.Paytm.CheckoutJS.init(config)
       .then(function onSuccess() {
+        console.log("inside window")
         // after successfully updating configuration, invoke JS Checkout
         window.Paytm.CheckoutJS.invoke();
       })
