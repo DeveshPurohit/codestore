@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
-import styles from "../styles/Home.module.css";
+import Link from 'next/link'
 
 export default function Home() {
   return (
@@ -11,10 +11,30 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="img mx-6 md:mx-64">
-        <Image src={"/homee.png"} alt={"home"} height={600} width={1000} />
-      </div>
+      <main className="max-w-7xl mx-auto pt-10 pb-12 px-4 sm:px-6 lg:px-8">
+      <div className="md:flex md:items-center md:justify-between">
+        <div className="md:w-1/2">
+          <h2 className="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+            <span className="block">Shop the latest</span>
+            <span className="block text-indigo-600">fashion trends</span>
+          </h2>
+          <p className="mt-3 text-base text-gray-500 sm:mt-5 sm:text-xl md:mt-5 md:text-lg">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eget urna sit amet enim auctor rhoncus sed vitae leo. 
+          </p>
+          <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
+            <div className="rounded-md shadow">
+              <Link href="/shop">
+                <a className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
+                  Shop Now
+                </a>
+              </Link>
+            </div>
+          </div>
+    </div>
+  </div>
+</main>  
 
+      
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
           <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
